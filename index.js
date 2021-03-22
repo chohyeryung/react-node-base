@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 const mongoose = require('mongoose');
+const { reset } = require('nodemon');
 mongoose.connect(config.mongoURI, {
     useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
 }).then(() => console.log('MongoDB Connected...'))
@@ -82,6 +83,17 @@ app.get('/api/users/auth', auth, (req,res) => {
     lastname : req.user.lastname,
     role: req.user.role,
     images:req.user.image
+  })
+})
+
+app.get('/api/users/logout', auth, (req,res) => {
+  User.findOneAndUpdate({_id:req.user._id}, 
+    {token:""}
+  , (err, user) => {
+    if(err) return res.json({success:false, err});
+    return res.status(200).send({
+      success:true
+    })
   })
 })
 
