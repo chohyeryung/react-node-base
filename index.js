@@ -25,8 +25,8 @@ app.post('/register', (req, res) => {
 
   const user = new User(req.body);  //req.body -> json 형식
   user.save((err, userInfo) => {
-    if(error) return res.json({success:false, err})
-    return res.status(200), json({
+    if(err) return res.json({success:false, err})
+    return res.status(200).json({
       success:true
     });
   });
